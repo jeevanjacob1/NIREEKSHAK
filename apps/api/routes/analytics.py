@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 from fastapi import APIRouter
+=======
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from database import get_db
+>>>>>>> b5dd076 (First commit from Backend Side)
 from schemas import AnalyticsOverview
 
 router = APIRouter(prefix="/analytics", tags=["Analytics & KPIs"])
 
 @router.get("/overview", response_model=AnalyticsOverview)
+<<<<<<< HEAD
 def get_analytics_overview():
     """Executive KPI metrics for Command Center Dashboard."""
     return {
@@ -18,3 +25,20 @@ def get_analytics_overview():
             "LOW": 1119
         }
     }
+=======
+def get_analytics_overview(db: Session = Depends(get_db)):
+    """Executive KPI metrics for Command Center Dashboard (Member 4)."""
+    return AnalyticsOverview(
+        total_projects=1420,
+        flagged_projects=187,
+        high_risk_count=42,
+        medium_risk_count=145,
+        total_flagged_amount=78450000.0,
+        top_flagged_states=[
+            {"state": "Karnataka", "flagged_count": 45, "total_risk_amount": 18500000.0},
+            {"state": "Maharashtra", "flagged_count": 38, "total_risk_amount": 16200000.0},
+            {"state": "Uttar Pradesh", "flagged_count": 34, "total_risk_amount": 14100000.0},
+            {"state": "Bihar", "flagged_count": 27, "total_risk_amount": 11300000.0}
+        ]
+    )
+>>>>>>> b5dd076 (First commit from Backend Side)

@@ -33,7 +33,11 @@ def get_all_risks(
         except Exception:
             pass
 
+<<<<<<< HEAD
     return {"items" :[
+=======
+    return [
+>>>>>>> b5dd076 (First commit from Backend Side)
         RiskProfileResponse(
             project_id="MPLADS-2024-KA-0089",
             risk_score=87,
@@ -47,4 +51,9 @@ def get_all_risks(
             ],
             review_status="NEEDS_INVESTIGATION"
         )
+<<<<<<< HEAD
     ]}
+=======
+    ]
+
+>>>>>>> b5dd076 (First commit from Backend Side)
