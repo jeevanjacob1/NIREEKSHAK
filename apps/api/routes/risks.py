@@ -34,10 +34,14 @@ def get_all_risks(
             pass
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     return {"items" :[
 =======
     return [
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+    return [
+>>>>>>> b042b8b (Made som changes in backend)
         RiskProfileResponse(
             project_id="MPLADS-2024-KA-0089",
             risk_score=87,
@@ -52,8 +56,12 @@ def get_all_risks(
             review_status="NEEDS_INVESTIGATION"
         )
 <<<<<<< HEAD
+<<<<<<< HEAD
     ]}
 =======
     ]
 
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+    ]
+>>>>>>> b042b8b (Made som changes in backend)
