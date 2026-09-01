@@ -4,11 +4,19 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import Project
 <<<<<<< HEAD
+<<<<<<< HEAD
 from schemas import ProjectListResponse, ProjectBase
 
 router = APIRouter(prefix="/projects", tags=["Projects"])
 
 # Fallback in-memory dataset using real MPLADS.csv data
+=======
+from schemas import ProjectListResponse, ProjectDetailResponse, RiskProfileResponse, RiskSignal
+
+router = APIRouter(prefix="/projects", tags=["Projects"])
+
+# Fallback in-memory dataset for unblocked frontend development
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
 MOCK_PROJECTS = [
     {
         "project_id": "MPLADS-RJ-001",
@@ -18,7 +26,11 @@ MOCK_PROJECTS = [
         "category": "Normal/Others",
         "amount": 100000.0,
         "status": "Unsanctioned",
+<<<<<<< HEAD
         "recommendation_date": "2024-03-04",
+=======
+        "recommendation_date": "2024-03-04", # Converted to ISO
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
         "risk_score": 87,
         "risk_level": "HIGH"
     },
@@ -30,6 +42,7 @@ MOCK_PROJECTS = [
         "category": "Normal/Others",
         "amount": 487000.0,
         "status": "Unsanctioned",
+<<<<<<< HEAD
         "recommendation_date": "2024-03-04",
         "risk_score": 12,
         "risk_level": "LOW"
@@ -97,6 +110,11 @@ MOCK_PROJECTS = [
             "signals": []
         }
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+        "recommendation_date": "2024-03-04", # Converted to ISO
+        "risk_score": 12,
+        "risk_level": "LOW"
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     }
 ]
 
@@ -104,17 +122,24 @@ MOCK_PROJECTS = [
 def get_projects(
     page: int = Query(1, ge=1),
 <<<<<<< HEAD
+<<<<<<< HEAD
     page_size: int = Query(20, ge=1, le=100),
     search: Optional[str] = Query(None),
     state: Optional[str] = Query(None),
     constituency: Optional[str] = Query(None),
 =======
     limit: int = Query(10, ge=1, le=100),
+=======
+    page_size: int = Query(10, ge=1, le=100),
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     search: Optional[str] = Query(None),
     state: Optional[str] = Query(None),
     constituency: Optional[str] = Query(None),
     risk_level: Optional[str] = Query(None),
+<<<<<<< HEAD
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     db: Optional[Session] = Depends(get_db)
 ):
     """Retrieve filtered, paginated list of projects."""
@@ -123,16 +148,21 @@ def get_projects(
             query = db.query(Project)
             if search:
 <<<<<<< HEAD
+<<<<<<< HEAD
                 query = query.filter(Project.project_name.ilike(f"%{search}%"))
 =======
                 query = query.filter(Project.title.ilike(f"%{search}%"))
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+                query = query.filter(Project.title.ilike(f"%{search}%"))
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
             if state:
                 query = query.filter(Project.state.ilike(f"%{state}%"))
             if constituency:
                 query = query.filter(Project.constituency.ilike(f"%{constituency}%"))
             
             total = query.count()
+<<<<<<< HEAD
 <<<<<<< HEAD
             db_projects = query.offset((page - 1) * page_size).limit(page_size).all()
             
@@ -159,6 +189,9 @@ def get_projects(
             return {"items": results, "total": total, "page": page, "page_size": page_size}
 =======
             db_projects = query.offset((page - 1) * limit).limit(limit).all()
+=======
+            db_projects = query.offset((page - 1) * page_size).page_size(page_size).all()
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
             
             results = []
             for p in db_projects:
@@ -172,14 +205,19 @@ def get_projects(
                         review_status=p.risk_profile.review_status
                     )
                 results.append(ProjectDetailResponse(**p.__dict__, risk_profile=risk_obj))
+<<<<<<< HEAD
             return ProjectListResponse(total=total, page=page, limit=limit, data=results)
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+            return ProjectListResponse(total=total, page=page, page_size=page_size, data=results)
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
         except Exception:
             pass  # Fall back to mock on db exception
 
     # Mock Response Logic
     filtered = MOCK_PROJECTS
     if state:
+<<<<<<< HEAD
 <<<<<<< HEAD
         filtered = [p for p in filtered if p["state"] and state.lower() in p["state"].lower()]
     if search:
@@ -220,6 +258,8 @@ def get_project_by_id(project_id: str, db: Optional[Session] = Depends(get_db)):
                     risk_level=risk_level
                 )
 =======
+=======
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
         filtered = [p for p in filtered if p["state"].lower() == state.lower()]
     if search:
         filtered = [p for p in filtered if search.lower() in p["title"].lower()]
@@ -229,8 +269,13 @@ def get_project_by_id(project_id: str, db: Optional[Session] = Depends(get_db)):
     return ProjectListResponse(
         total=len(filtered),
         page=page,
+<<<<<<< HEAD
         limit=limit,
         data=filtered[(page - 1) * limit : page * limit]
+=======
+        page_size=page_size,
+        data=filtered[(page - 1) * page_size : page * page_size]
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     )
 
 @router.get("/{project_id}", response_model=ProjectDetailResponse)
@@ -250,11 +295,15 @@ def get_project_by_id(project_id: str, db: Optional[Session] = Depends(get_db)):
                         review_status=proj.risk_profile.review_status
                     )
                 return ProjectDetailResponse(**proj.__dict__, risk_profile=risk_obj)
+<<<<<<< HEAD
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
         except Exception:
             pass
 
     for p in MOCK_PROJECTS:
+<<<<<<< HEAD
 <<<<<<< HEAD
         if p["project_id"] == project_id:
             return p
@@ -266,3 +315,9 @@ def get_project_by_id(project_id: str, db: Optional[Session] = Depends(get_db)):
 
     raise HTTPException(status_code=404, detail=f"Project {project_id} not found")
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+        if p["id"] == project_id:
+            return p
+
+    raise HTTPException(status_code=404, detail=f"Project {project_id} not found")
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")

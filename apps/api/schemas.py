@@ -2,13 +2,17 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # --- Core Sub-components ---
 =======
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
 class RiskSignal(BaseModel):
     type: str = Field(..., example="COST_ANOMALY")
     severity: str = Field(..., example="HIGH")
     explanation: str = Field(..., example="Project amount is 2.3x the peer-group median.")
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 class TimelineEvent(BaseModel):
@@ -68,6 +72,8 @@ class TimelineResponse(BaseModel):
 
 class EvidenceResponse(BaseModel):
 =======
+=======
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     evidence: Optional[dict] = None
 
 class RiskProfileResponse(BaseModel):
@@ -98,7 +104,11 @@ class ProjectDetailResponse(ProjectBase):
 class ProjectListResponse(BaseModel):
     total: int
     page: int
+<<<<<<< HEAD
     limit: int
+=======
+    page_size: int
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     data: List[ProjectDetailResponse]
 
 class AnalyticsOverview(BaseModel):
@@ -126,14 +136,21 @@ class TimelineStage(BaseModel):
     observation: Optional[str] = None
 
 class PeerComparison(BaseModel):
+<<<<<<< HEAD
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
     project_amount: float
     peer_median: float
     peer_min: float
     peer_max: float
+<<<<<<< HEAD
 <<<<<<< HEAD
     matching_project_ids: Optional[List[str]] = None
     timeline_anomaly_details: Optional[str] = None
 =======
     peer_sample_count: int
 >>>>>>> b5dd076 (First commit from Backend Side)
+=======
+    peer_sample_count: int
+>>>>>>> 7e53b5b (Revert "First commit from Backend Side")
