@@ -35,6 +35,7 @@ def get_all_risks(
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     return {"items" :[
 =======
     return [
@@ -42,6 +43,12 @@ def get_all_risks(
 =======
     return [
 >>>>>>> b042b8b (Made som changes in backend)
+=======
+    return [
+=======
+    return {"items" :[
+>>>>>>> ffedff0 (Making changes for datasets)
+>>>>>>> 787116b (Making changes for datasets)
         RiskProfileResponse(
             project_id="MPLADS-2024-KA-0089",
             risk_score=87,
@@ -57,6 +64,7 @@ def get_all_risks(
         )
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     ]}
 =======
     ]
@@ -65,3 +73,9 @@ def get_all_risks(
 =======
     ]
 >>>>>>> b042b8b (Made som changes in backend)
+=======
+    ]
+=======
+    ]}
+>>>>>>> ffedff0 (Making changes for datasets)
+>>>>>>> 787116b (Making changes for datasets)

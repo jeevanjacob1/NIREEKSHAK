@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from fastapi import APIRouter
 =======
 from fastapi import APIRouter, Depends
@@ -11,11 +12,20 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 >>>>>>> b042b8b (Made som changes in backend)
+=======
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+from database import get_db
+=======
+from fastapi import APIRouter
+>>>>>>> ffedff0 (Making changes for datasets)
+>>>>>>> 787116b (Making changes for datasets)
 from schemas import AnalyticsOverview
 
 router = APIRouter(prefix="/analytics", tags=["Analytics & KPIs"])
 
 @router.get("/overview", response_model=AnalyticsOverview)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 def get_analytics_overview():
@@ -35,6 +45,8 @@ def get_analytics_overview():
 =======
 =======
 >>>>>>> b042b8b (Made som changes in backend)
+=======
+>>>>>>> 787116b (Making changes for datasets)
 def get_analytics_overview(db: Session = Depends(get_db)):
     """Executive KPI metrics for Command Center Dashboard (Member 4)."""
     return AnalyticsOverview(
@@ -50,8 +62,28 @@ def get_analytics_overview(db: Session = Depends(get_db)):
             {"state": "Bihar", "flagged_count": 27, "total_risk_amount": 11300000.0}
         ]
 <<<<<<< HEAD
+<<<<<<< HEAD
     )
 >>>>>>> b5dd076 (First commit from Backend Side)
 =======
     )
 >>>>>>> b042b8b (Made som changes in backend)
+=======
+    )
+=======
+def get_analytics_overview():
+    """Executive KPI metrics for Command Center Dashboard."""
+    return {
+        "total_projects": 1420,
+        "high_risk_projects": 87,
+        "medium_risk_projects": 214,
+        "under_review_projects": 45,
+        "flagged_amount": 78450000.0,
+        "risk_distribution": {
+            "HIGH": 87,
+            "MEDIUM": 214,
+            "LOW": 1119
+        }
+    }
+>>>>>>> ffedff0 (Making changes for datasets)
+>>>>>>> 787116b (Making changes for datasets)
