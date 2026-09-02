@@ -1,70 +1,73 @@
-from typing import List, Optional
-from pydantic import BaseModel, Field
+from sqlalchemy import Column, String, Integer, ForeignKey, JSON, Date, Text, Numeric, TIMESTAMP
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+from database import Base
 
-class RiskSignal(BaseModel):
-    type: str = Field(..., example="COST_ANOMALY")
-    severity: str = Field(..., example="HIGH")
-    explanation: str = Field(..., example="Project amount is 2.3x the peer-group median.")
-    evidence: Optional[dict] = None
+class State(Base):
+    __tablename__ = "states"
+    state_id = Column(Integer, primary_key=True, autoincrement=True)
+    state_name = Column(String(150), unique=True, nullable=False)
 
-class RiskProfileResponse(BaseModel):
-    project_id: str
-    risk_score: int = Field(..., ge=0, le=100)
-    risk_level: str = Field(..., example="HIGH")
-    signals: List[RiskSignal] = []
-    review_status: str = "UNREVIEWED"
+class Constituency(Base):
+    __tablename__ = "constituencies"
+    constituency_id = Column(Integer, primary_key=True, autoincrement=True)
+    state_id = Column(Integer, ForeignKey("states.state_id"), nullable=False)
+    constituency_name = Column(String(200), nullable=False)
+    state = relationship("State")
 
-class ProjectBase(BaseModel):
-    id: str
-    title: str
-    description: Optional[str] = None
-    category: str
-    state: str
-    constituency: str
-    mp_name: str
-    sanctioned_amount: float
-    expenditure_amount: float
-    status: str
-    implementing_agency: Optional[str] = None
-    sanction_date: Optional[str] = None
-    completion_date: Optional[str] = None
+class MP(Base):
+    __tablename__ = "mps"
+    mp_id = Column(Integer, primary_key=True, autoincrement=True)
+    mp_name = Column(String(250), nullable=False)
+    house = Column(String(50))
+    constituency_id = Column(Integer, ForeignKey("constituencies.constituency_id"))
+    constituency = relationship("Constituency")
 
-class ProjectDetailResponse(ProjectBase):
-    risk_profile: Optional[RiskProfileResponse] = None
+class Project(Base):
+    __tablename__ = "projects"
+    
+    project_id = Column(String(50), primary_key=True)
+    mp_id = Column(Integer, ForeignKey("mps.mp_id"))
+    constituency_id = Column(Integer, ForeignKey("constituencies.constituency_id"))
+    state_id = Column(Integer, ForeignKey("states.state_id"))
+    
+    # Member 1 renamed this from project_name
+    work_description = Column(Text)
+    category = Column(String(250))
+    city = Column(String(250))
+    ward = Column(String(250))
+    block = Column(String(250))
+    village = Column(String(250))
+    
+    # Numeric types instead of float
+    recommended_amount = Column(Numeric(15,2))
+    allocated_amount = Column(Numeric(15,2))
+    expenditure_amount = Column(Numeric(15,2))
+    
+    # Real PostgreSQL DATE types
+    recommendation_date = Column(Date)
+    approval_date = Column(Date)
+    start_date = Column(Date)
+    completion_date = Column(Date)
+    
+    # Renamed status fields
+    project_status = Column(String(150))
+    approval_status = Column(String(150))
+    
+    source_row_number = Column(Integer)
+    created_at = Column(TIMESTAMP, server_default=func.now())
 
-class ProjectListResponse(BaseModel):
-    total: int
-    page: int
-    limit: int
-    data: List[ProjectDetailResponse]
+    # --- Relationships for easy querying ---
+    state = relationship("State")
+    constituency = relationship("Constituency")
+    mp = relationship("MP")
+    risk_profile = relationship("ProjectRisk", back_populates="project", uselist=False)
 
-class AnalyticsOverview(BaseModel):
-    total_projects: int
-    flagged_projects: int
-    high_risk_count: int
-    medium_risk_count: int
-    total_flagged_amount: float
-    top_flagged_states: List[dict]
+class ProjectRisk(Base):
+    __tablename__ = "project_risks"
+    project_id = Column(String(50), ForeignKey("projects.project_id"), primary_key=True)
+    risk_score = Column(Integer, default=0)
+    risk_level = Column(String(20), default="LOW")
+    signals = Column(JSON, default=list)
 
-class SimilarProject(BaseModel):
-    project_id: str
-    title: str
-    similarity_score: float
-    distance_km: Optional[float] = None
-    state: str
-    constituency: str
-    sanctioned_amount: float
-
-class TimelineStage(BaseModel):
-    stage: str
-    date: Optional[str] = None
-    status: str
-    is_anomaly: bool = False
-    observation: Optional[str] = None
-
-class PeerComparison(BaseModel):
-    project_amount: float
-    peer_median: float
-    peer_min: float
-    peer_max: float
-    peer_sample_count: int
+    project = relationship("Project", back_populates="risk_profile")
