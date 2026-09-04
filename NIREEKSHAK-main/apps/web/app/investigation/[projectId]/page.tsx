@@ -3,6 +3,7 @@
 import React, { useState, use } from 'react';
 import {
   FileCheck,
+  ArrowLeft,
   Search,
   Layers,
 } from 'lucide-react';
@@ -990,6 +991,10 @@ export default function ProjectInvestigationPage({ params }: PageProps) {
       <header className="border-b border-slate-800 bg-[#0b1016] w-full">
           <div className="max-w-screen-2xl mx-auto px-8 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
+              <a href="/projects" className="inline-flex items-center text-sm text-slate-400 hover:text-emerald-400 transition-colors mb-4 group font-medium">
+                <ArrowLeft className="w-4 h-4 mr-1.5 group-hover:-translate-x-1 transition-transform" />
+                Back to Projects
+              </a>
               <p className="text-xs tracking-[0.25em] text-emerald-400 font-semibold uppercase">
                 INVESTIGATION CENTRE
               </p>
