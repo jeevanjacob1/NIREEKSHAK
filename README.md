@@ -170,5 +170,3 @@ Open your browser and navigate to `http://localhost:3000` (or the configured hos
 Specify the project license here (e.g., MIT, Apache 2.0). If not yet decided, add a `LICENSE` file later.
 
 ---
-
-*This README was generated based on the project description provided. Adjust any placeholders and add concrete commands or environment details as needed.*
