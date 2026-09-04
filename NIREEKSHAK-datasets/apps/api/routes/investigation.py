@@ -2,6 +2,16 @@ from fastapi import APIRouter, HTTPException
 import pandas as pd
 from services.engine import engine
 
+def round_floats(obj):
+    if isinstance(obj, float):
+        return round(obj, 4)
+    elif isinstance(obj, dict):
+        return {k: round_floats(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [round_floats(x) for x in obj]
+    return obj
+
+
 router = APIRouter(prefix="/projects", tags=["Investigation & Evidence"])
 
 @router.get("/{project_id}/investigation")
@@ -93,7 +103,7 @@ def get_investigation_data(project_id: str):
         "statisticalObservations": []
     }
 
-    return {
+    return round_floats({
         "header": {
             "projectId": project_id,
             "title": row.get("Work Description", ""),
@@ -160,7 +170,7 @@ def get_investigation_data(project_id: str):
             "reviewedBy": "",
             "reviewedAt": ""
         }
-    }
+    })
 from schemas import SimilarProjectsResponse, TimelineResponse, EvidenceResponse
 
 @router.get("/{project_id}/similar", response_model=SimilarProjectsResponse)
