@@ -3,7 +3,8 @@ import joblib
 import os
 import json
 
-MODEL_DIR = "/home/ryoku/Documents/NIREEKSHAK/content/nireekshak-engine-final/models"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+MODEL_DIR = os.environ.get("MODEL_DIR", os.path.join(BASE_DIR, "content", "nireekshak-engine-final", "models"))
 
 class AnomalyEngine:
     def __init__(self):
