@@ -133,10 +133,10 @@ def get_investigation_data(project_id: str):
             "summaryText": str(row.get("investigation_recommendation", ""))
         },
         "signals": signals,
+        "timeline": [],
         "evidence": {
             "costOutlier": cost_evidence,
             "duplicateMatch": duplicate_evidence,
-            "timeline": None,
             "geospatial": {
                 "reportedCoordinates": {"lat": 0, "lng": 0},
                 "satelliteCoordinates": {"lat": 0, "lng": 0},
