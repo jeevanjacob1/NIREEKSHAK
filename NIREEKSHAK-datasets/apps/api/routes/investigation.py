@@ -148,11 +148,15 @@ def get_investigation_data(project_id: str):
             "costOutlier": cost_evidence,
             "duplicateMatch": duplicate_evidence,
             "geospatial": {
-                "reportedCoordinates": {"lat": 0, "lng": 0},
-                "satelliteCoordinates": {"lat": 0, "lng": 0},
-                "distanceDiscrepancyMeters": 0,
-                "satelliteImageryUrl": "",
-                "lastVerifiedDate": ""
+                "latitude": 27.5,
+                "longitude": 79.5,
+                "geoAccuracyMeters": 15,
+                "geoSource": "PORTAL_MANUAL_ENTRY",
+                "nearestPeerWorksCountWithin500m": 0,
+                "clusterAnomalyDetected": False,
+                "satelliteClearanceScore": 0,
+                "cadastralLandId": "UNKNOWN",
+                "landStatusNote": "N/A"
             },
             "agencyRisk": {
                 "agencyName": row.get("Vendor Name", "Unknown"),
