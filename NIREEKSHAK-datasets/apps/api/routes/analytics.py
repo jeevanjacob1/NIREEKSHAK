@@ -15,12 +15,14 @@ def get_analytics_overview(db: Session = Depends(get_db)):
     # 1. Total projects in the database
     total_projects = db.query(func.count(Project.project_id)).scalar() or 0
 
-    # 2. Count risk distribution from AnomalyEngine
-    high_risk = len(engine.df[engine.df["investigation_priority_v2_DERIVED"] == "HIGH"]) + len(engine.df[engine.df["investigation_priority_v2_DERIVED"] == "CRITICAL"])
-    med_risk = len(engine.df[engine.df["investigation_priority_v2_DERIVED"] == "MEDIUM"])
-    low_risk = len(engine.df[engine.df["investigation_priority_v2_DERIVED"] == "LOW"])
+    # 2. Count risk distribution from AnomalyEngine memory-efficiently
+    series = engine.df["investigation_priority_v2_DERIVED"]
+    high_risk = int((series == "HIGH").sum() + (series == "CRITICAL").sum())
+    med_risk = int((series == "MEDIUM").sum())
+    low_risk = int((series == "LOW").sum())
     
-    flagged_amount = engine.df[engine.df["investigation_priority_v2_DERIVED"].isin(["HIGH", "CRITICAL", "MEDIUM"])]["Sanction Amount ( ₹ )"].sum()
+    # Use loc and sum to prevent copying entire dataframe rows
+    flagged_amount = engine.df.loc[series.isin(["HIGH", "CRITICAL", "MEDIUM"]), "Sanction Amount ( ₹ )"].sum()
 
     # 4. Map SQL results exactly to expected JSON format
     return {

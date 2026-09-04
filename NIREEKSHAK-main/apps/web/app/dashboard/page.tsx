@@ -21,16 +21,20 @@ export default function DashboardPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/projects?page_size=100").then(res => res.json()),
-      fetch("/api/analytics/overview").then(res => res.json())
+      fetch("/api/projects?page_size=100")
+        .then(res => res.ok ? res.json() : { items: [] })
+        .catch(() => ({ items: [] })),
+      fetch("/api/analytics/overview")
+        .then(res => res.ok ? res.json() : dashboardStats)
+        .catch(() => dashboardStats)
     ]).then(([projectsData, analyticsData]) => {
       setProjects(projectsData.items || []);
       setDashboardStats({
-        totalProjects: analyticsData.total_projects || 0,
-        flaggedProjects: analyticsData.under_review_projects || 0,
-        highRisk: analyticsData.high_risk_projects || 0,
-        underReview: analyticsData.under_review_projects || 0,
-        valueAtRisk: analyticsData.flagged_amount || 0,
+        totalProjects: analyticsData.total_projects || dashboardStats.totalProjects,
+        flaggedProjects: analyticsData.under_review_projects || dashboardStats.flaggedProjects,
+        highRisk: analyticsData.high_risk_projects || dashboardStats.highRisk,
+        underReview: analyticsData.under_review_projects || dashboardStats.underReview,
+        valueAtRisk: analyticsData.flagged_amount || dashboardStats.valueAtRisk,
       });
       setLoading(false);
     }).catch(err => {
