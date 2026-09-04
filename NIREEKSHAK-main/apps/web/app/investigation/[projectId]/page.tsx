@@ -900,7 +900,7 @@ export default function ProjectInvestigationPage({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
-    fetch(`/api/projects/${urlProjectId}/investigation`)
+    fetch(`/api/projects/${urlProjectId}/investigation?_t=${Date.now()}`)
       .then(res => {
         if (!res.ok) throw new Error("Not found");
         return res.json();

@@ -23,8 +23,8 @@ export const GeospatialVerificationCard: React.FC<GeospatialVerificationCardProp
   matchedDistanceMeters,
 }) => {
   const {
-    latitude,
-    longitude,
+    latitude = 0,
+    longitude = 0,
     geoAccuracyMeters,
     geoSource,
     nearestPeerWorksCountWithin500m,
